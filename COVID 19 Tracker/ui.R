@@ -1,9 +1,203 @@
-source("UI/ui_overview.R", local = TRUE)
-source("UI/ui_about.R", local = TRUE)
-source("UI/ui_fullTable.R", local = TRUE)
+# Help View
 
+body_help <- dashboardBody(
+  fluidRow(
+    fluidRow(
+      column(
+        box(
+          title = div("App Description", style = "padding-left: 20px", class = "h2"),
+          column(
+            h3("The COVID-19 Tracker App"),
+            "This dashboard demonstrates some recent news about the Coronavirus pandemic. 
+            This App is a simulator, that reads from the John Hopkins dataset, and shows some data related to mortality,  
+            recovery, infected, and etc..",
+            tags$br(),
+            
+            
+            h3("Creator"),
+            "Ahmad Bazzi",
+            tags$br(),
+            tags$a(href = "https://www.youtube.com/c/AhmadBazzi", "YouTube"), " | ",
+            tags$a(href = "https://www.linkedin.com/in/drahmadbazzi/", "LinkedIn"), " | ",
+            tags$a(href = "https://scholar.google.fr/citations?user=9HWunwcAAAAJ&hl=en&oi=ao", "Google Scholar"), " | ",
+            tags$a(href = "https://www.researchgate.net/profile/Ahmad_Bazzi", "ResearchGate"), 
+            width = 12
+          ),
+          width = 6,
+        ),
+        width = 12,
+        style = "padding: 15px"
+      )
+    )
+  )
+)
+
+
+page_help <- dashboardPage(
+  title = "About",
+  header = dashboardHeader(disable = TRUE),
+  sidebar = dashboardSidebar(disable = TRUE),
+  body = body_help
+)
+
+# About View
+
+
+body_about <- dashboardBody(
+  fluidRow(
+    fluidRow(
+      column(
+        box(
+          title = div("App Description", style = "padding-left: 20px", class = "h2"),
+          column(
+            h3("The COVID-19 Tracker App"),
+            "This dashboard demonstrates some recent news about the Coronavirus pandemic. 
+            This App is a simulator, that reads from the John Hopkins dataset, and shows some data related to mortality,  
+            recovery, infected, and etc..",
+            tags$br(),
+            
+            
+            h3("Creator"),
+            "Ahmad Bazzi",
+            tags$br(),
+            tags$a(href = "https://www.youtube.com/c/AhmadBazzi", "YouTube"), " | ",
+            tags$a(href = "https://www.linkedin.com/in/drahmadbazzi/", "LinkedIn"), " | ",
+            tags$a(href = "https://scholar.google.fr/citations?user=9HWunwcAAAAJ&hl=en&oi=ao", "Google Scholar"), " | ",
+            tags$a(href = "https://www.researchgate.net/profile/Ahmad_Bazzi", "ResearchGate"), 
+            width = 12
+          ),
+          width = 6,
+        ),
+        width = 12,
+        style = "padding: 15px"
+      )
+    )
+  )
+)
+
+
+page_about <- dashboardPage(
+  title = "About",
+  header = dashboardHeader(disable = TRUE),
+  sidebar = dashboardSidebar(disable = TRUE),
+  body = body_about
+)
+
+# Overview
+body_overview <- dashboardBody(
+  tags$head(
+    tags$style(type = "text/css", "#overview_map {height: 75h !important;}"),
+    tags$style(type = "text/css", "#summary {height: 60h !important;}"),
+    tags$style(type = 'text/css', ".slider-animate-button { font-size: 20pt !important; }"),
+    tags$style(type = 'text/css', ".slider-animate-container { text-align: left !important; }"),
+    # tags$style(type = "text/css", "@media (max-width: 991px) { .details { display: flex; flex-direction: column; } }"),
+    tags$style(type = "text/css", "@media (max-width: 991px) { .details .map { order: 1; width: 100%; } }"),
+    tags$style(type = "text/css", "@media (max-width: 991px) { .details .summary { order: 3; width: 100%; } }"),
+    tags$style(type = "text/css", "@media (max-width: 991px) { .details .slider { order: 2; width: 100%; } }")
+  ),
+  fluidRow(
+    fluidRow(
+      class = "details",
+      column(
+        box(
+          width = 12,
+          leafletOutput("overview_map")
+        ),
+        class = "map",
+        width = 9,
+        style = 'padding:0px;'
+      ),
+      column(
+        uiOutput("box_keyFigures"),
+        class = "summary",
+        width = 3,
+        style = 'padding:0px;'
+      ),
+      column(
+        sliderInput(
+          "timeSlider",
+          label      = "Time Machine",
+          min        = min(data_evolution$date),
+          max        = max(data_evolution$date),
+          value      = max(data_evolution$date),
+          width      = "100%",
+          timeFormat = "%d-%B-%Y",
+          animate    = animationOptions(loop = TRUE)
+        ),
+        class = "slider",
+        width = 12
+      )
+    )
+  )
+)
+
+
+
+page_overview <- dashboardPage(
+  title   = "Overview",
+  header  = dashboardHeader(disable = TRUE),
+  sidebar = dashboardSidebar(disable = TRUE),
+  body    = body_overview
+)
+
+
+
+
+
+# Data View
+body_data <- dashboardBody(
+  tags$head(
+    tags$style(type = "text/css", "@media (min-width: 768px) { .full-table { margin-top: -30px; } }")
+  ),
+  fluidPage(
+    fluidRow(
+      h3(paste0("Complete Data (", strftime(current_date, format = "%d.%m.%Y"), ")"),
+         class = "box-title", style = "margin-top: 10px; font-size: 18px;"),
+      div(
+        dataTableOutput("fullTable"),
+        class = "full-table"
+      ),
+      div(
+        sliderInput(
+          "timeSlider",
+          label      = "Time Machine",
+          min        = min(data_evolution$date),
+          max        = max(data_evolution$date),
+          value      = max(data_evolution$date),
+          width      = "100%",
+          timeFormat = "%d-%B-%Y",
+          animate    = animationOptions(loop = TRUE)
+        )
+      ),
+      width = 12
+    )
+  )
+)
+
+page_data <- dashboardPage(
+  title   = "Data",
+  header  = dashboardHeader(disable = TRUE),
+  sidebar = dashboardSidebar(disable = TRUE),
+  body    = body_data
+)
+
+
+
+# Analysis view
+
+page_analysis <- dashboardPage(
+  title = "Plots",
+  header = dashboardHeader(disable = TRUE),
+  sidebar = dashboardSidebar(disable = TRUE),
+  body = dashboardBody(fluidRow(fluidRow(uiOutput("box_caseEvolution"))))
+)
+
+
+
+
+##
 ui <- fluidPage(
-  title = "COVID-19 Global Cases",
+  title = "COVID-19 Shiny Tracker",
   tags$head(
     tags$link(rel = "shortcut icon", type = "image/png", href = "logo.png")
   ),
@@ -14,15 +208,14 @@ ui <- fluidPage(
   tags$style(HTML(".col-sm-12 { padding: 5px; margin-bottom: -15px; }")),
   tags$style(HTML(".col-sm-6 { padding: 5px; margin-bottom: -15px; }")),
   navbarPage(
-    title       = div("COVID-19 Tracker", style = "padding-left: 10px"),
+    title       = div("COVID-19 Shiny Tracker", style = "padding-left: 10px"),
     inverse = TRUE,
     collapsible = TRUE,
     fluid       = TRUE,
     tabPanel("Overview", page_overview, value = "page-overview"),
-    tabPanel("Table", page_fullTable, value = "page-fullTable"),
-    tabPanel("About", page_about, value = "page-about"),
-    tags$script(HTML("var header = $('.navbar > .container-fluid');
-    console.log(header)")
+    tabPanel("Data", page_data, value = "page-data"),
+    tabPanel("Analysis", page_analysis, value = "page-analysis"),
+    tabPanel("Help", page_help, value = "page-help"),
+    tabPanel("About", page_about, value = "page-about")
     )
   )
-)

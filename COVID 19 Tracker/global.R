@@ -3,52 +3,19 @@ library("shiny")
 library("shinydashboard")
 library("tidyverse")
 library("leaflet")
-
+library("plotly")
 library("DT")
 library("fs")
 library("wbstats")
 
 
-
-source("utils.R", local = T)
-
-downloadGithubData <- function() {
-  download.file(
-    url      = "https://github.com/CSSEGISandData/COVID-19/archive/master.zip",
-    destfile = "data/covid19_data.zip"
-  )
-  
-  data_path <- "COVID-19-master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_"
-  unzip(
-    zipfile   = "data/covid19_data.zip",  
-    files     = paste0(data_path, c("confirmed_global.csv", "deaths_global.csv", "recovered_global.csv")),
-    exdir     = "data",
-    junkpaths = T
-  )
-}
-
-
-updateData <- function() {
-  # Download data from Johns Hopkins (https://github.com/CSSEGISandData/COVID-19) if the data is older than 0.5h
-  if (!dir_exists("data")) {
-    dir.create('data')
-    downloadGithubData()
-  } else if ((!file.exists("data/covid19_data.zip")) || (as.double(Sys.time() - file_info("data/covid19_data.zip")$change_time, units = "hours") > 0.5)) {
-    downloadGithubData()
-  }
-}
-
-# Update with start of app
-updateData()
-
-# TODO: Still throws a warning but works for now
-data_confirmed <- read_csv("data/time_series_covid19_confirmed_global.csv")
-data_deceased  <- read_csv("data/time_series_covid19_deaths_global.csv")
+# Get data form git hub
+data_confirmed <- read_csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv")
+data_deceased  <- read_csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv")
 # data_recovered <- read_csv("data/time_series_covid19_recovered_global.csv")
 
 # Get latest data
 current_date <- as.Date(names(data_confirmed)[ncol(data_confirmed)], format = "%m/%d/%y")
-changed_date <- file_info("data/covid19_data.zip")$change_time
 
 # Get evolution data by country
 data_confirmed_sub <- data_confirmed %>%
@@ -56,10 +23,6 @@ data_confirmed_sub <- data_confirmed %>%
   group_by(`Province/State`, `Country/Region`, date, Lat, Long) %>%
   summarise("confirmed" = sum(value, na.rm = T))
 
-# data_recovered_sub <- data_recovered %>%
-#   pivot_longer(names_to = "date", cols = 5:ncol(data_recovered)) %>%
-#   group_by(`Province/State`, `Country/Region`, date, Lat, Long) %>%
-#   summarise("recovered" = sum(value, na.rm = T))
 
 data_deceased_sub <- data_deceased %>%
   pivot_longer(names_to = "date", cols = 5:ncol(data_deceased)) %>%
@@ -88,11 +51,8 @@ data_evolution <- data_evolution %>%
 
 rm(data_confirmed, data_confirmed_sub, data_recovered, data_recovered_sub, data_deceased, data_deceased_sub)
 
-
-
-
 # ---- Download population data ----
-population                                                            <- wb(indicator = "SP.POP.TOTL", startdate = 2018, enddate = 2020) %>%
+population                                                            <- wb( indicator = "SP.POP.TOTL", startdate = 2018, enddate = 2020) %>%
   select(country, value) %>%
   rename(population = value)
 countryNamesPop                                                       <- c("Brunei Darussalam", "Congo, Dem. Rep.", "Congo, Rep.", "Czech Republic",
@@ -105,13 +65,12 @@ population[which(population$country %in% countryNamesPop), "country"] <- country
 
 # Data from wikipedia
 noDataCountries <- data.frame(
-  country    = c("Cruise Ship", "Guadeloupe", "Guernsey", "Holy See", "Jersey", "Martinique", "Reunion", "Taiwan*"),
-  population = c(3700, 395700, 63026, 800, 106800, 376480, 859959, 23780452)
+ country    = c("Cruise Ship", "Guadeloupe", "Guernsey", "Holy See", "Jersey", "Martinique", "Reunion", "Taiwan*"),
+ population = c(3700, 395700, 63026, 800, 106800, 376480, 859959, 23780452)
 )
 population      <- bind_rows(population, noDataCountries)
-
 data_evolution <- data_evolution %>%
-  left_join(population, by = c("Country/Region" = "country"))
+   left_join(population, by = c("Country/Region" = "country"))
 rm(population, countryNamesPop, countryNamesDat, noDataCountries)
 
 data_atDate <- function(inputDate) {
@@ -134,8 +93,6 @@ top5_countries <- data_evolution %>%
   top_n(5) %>%
   select(`Country/Region`) %>%
   pull()
-
-
 
 
 

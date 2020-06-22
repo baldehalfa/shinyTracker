@@ -1,16 +1,18 @@
+source_files <- function(path) {
+  
+  files <- list.files(path = path, pattern = ".*\\.R", all.files = F, full.names = TRUE, recursive = TRUE)
+  for (fileToSource in files) {
+    source(fileToSource, local = parent.frame())
+    cat(fileToSource, "sourced.\n")
+  }
+}
+
+
+
 server <- function(input, output) {
-  sourceDirectory("sections", recursive = TRUE)
+  source_files("sections")
 
-  showNotification("Welcome to the COVID-19 Tracker",
-    duration = NULL, type = "warning")
-
-  # Trigger once an hour
-  dataLoadingTrigger <- reactiveTimer(3600000)
-
-  observeEvent(dataLoadingTrigger, {
-    updateData()
-  })
-
+  
   observe({
     data <- data_atDate(input$timeSlider)
   })

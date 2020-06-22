@@ -35,8 +35,7 @@ output$valueBox_confirmed <- renderValueBox({
   valueBox(
     key_figures()$confirmed,
     subtitle = "Confirmed",
-    icon     = icon("plus"),
-    color    = "blue",
+    color    = "red",
     width    = NULL
   )
 })
@@ -46,17 +45,15 @@ output$valueBox_recovered <- renderValueBox({
   valueBox(
     key_figures()$recovered,
     subtitle = "Estimated Recoveries",
-    icon     = icon("heart"),
-    color    = "blue"
+    color    = "green",
   )
 })
 
 output$valueBox_deceased <- renderValueBox({
   valueBox(
     key_figures()$deceased,
-    subtitle = "Deceased",
-    icon     = icon("minus"),
-    color    = "blue"
+    subtitle = "Deaths",
+    color    = "black",
   )
 })
 
@@ -64,23 +61,31 @@ output$valueBox_countries <- renderValueBox({
   valueBox(
     key_figures()$countries,
     subtitle = "Affected Countries",
-    icon     = icon("flag"),
-    color    = "blue"
+    color    = "blue",
   )
 })
 
 output$box_keyFigures <- renderUI(box(
-  title = paste0("Key Figures (", strftime(input$timeSlider, format = "%d.%m.%Y"), ")"),
-  fluidRow(
-    column(
-      valueBoxOutput("valueBox_confirmed", width = 3),
-      valueBoxOutput("valueBox_recovered", width = 3),
-      valueBoxOutput("valueBox_deceased", width = 3),
-      valueBoxOutput("valueBox_countries", width = 3),
-      width = 12,
-      style = "margin-left: -20px"
-    )
-  ),
-  div("Last updated: ", strftime(changed_date, format = "%d.%m.%Y - %R %Z")),
+  title = paste0("Summary (", strftime(input$timeSlider, format = "%d-%B-%Y"), ")"),
+  # fluidRow(
+  #   valueBoxOutput("valueBox_confirmed", width = 3),
+  #   valueBoxOutput("valueBox_recovered", width = 3),
+  #   valueBoxOutput("valueBox_deceased", width = 3),
+  #   valueBoxOutput("valueBox_countries", width = 3),
+  #   # column(
+  #   #   valueBoxOutput("valueBox_confirmed", width = 3),
+  #   #   valueBoxOutput("valueBox_recovered", width = 3),
+  #   #   valueBoxOutput("valueBox_deceased", width = 3),
+  #   #   valueBoxOutput("valueBox_countries", width = 3),
+  #   #   width = 12,
+  #   #   style = "margin-left: -20px"
+  #   # )
+  #   
+  # ),
+  fluidRow(valueBoxOutput("valueBox_confirmed", width = 12)),
+  fluidRow(valueBoxOutput("valueBox_recovered", width = 12)),
+  fluidRow(valueBoxOutput("valueBox_deceased", width = 12)),
+  fluidRow(valueBoxOutput("valueBox_countries", width = 12)),
+
   width = 12
 ))
