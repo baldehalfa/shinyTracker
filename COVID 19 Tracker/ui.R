@@ -1,44 +1,5 @@
 # Help View
 
-body_help <- dashboardBody(
-  fluidRow(
-    fluidRow(
-      column(
-        box(
-          title = div("App Description", style = "padding-left: 20px", class = "h2"),
-          column(
-            h3("The COVID-19 Tracker App"),
-            "This dashboard demonstrates some recent news about the Coronavirus pandemic. 
-            This App is a simulator, that reads from the John Hopkins dataset, and shows some data related to mortality,  
-            recovery, infected, and etc..",
-            tags$br(),
-            
-            
-            h3("Creator"),
-            "Ahmad Bazzi",
-            tags$br(),
-            tags$a(href = "https://www.youtube.com/c/AhmadBazzi", "YouTube"), " | ",
-            tags$a(href = "https://www.linkedin.com/in/drahmadbazzi/", "LinkedIn"), " | ",
-            tags$a(href = "https://scholar.google.fr/citations?user=9HWunwcAAAAJ&hl=en&oi=ao", "Google Scholar"), " | ",
-            tags$a(href = "https://www.researchgate.net/profile/Ahmad_Bazzi", "ResearchGate"), 
-            width = 12
-          ),
-          width = 6,
-        ),
-        width = 12,
-        style = "padding: 15px"
-      )
-    )
-  )
-)
-
-
-page_help <- dashboardPage(
-  title = "About",
-  header = dashboardHeader(disable = TRUE),
-  sidebar = dashboardSidebar(disable = TRUE),
-  body = body_help
-)
 
 # About View
 
@@ -48,28 +9,56 @@ body_about <- dashboardBody(
     fluidRow(
       column(
         box(
-          title = div("App Description", style = "padding-left: 20px", class = "h2"),
+          title = div("User Guide", style = "padding-left: 40px", class = "h2"),
           column(
             h3("The COVID-19 Tracker App"),
             "This dashboard demonstrates some recent news about the Coronavirus pandemic. 
             This App is a simulator, that reads from the John Hopkins dataset, and shows some data related to mortality,  
             recovery, infected, and etc..",
             tags$br(),
-            
-            
-            h3("Creator"),
-            "Ahmad Bazzi",
+            "This dashboard shows recent developments of the COVID-19 pandemic. The latest
+            open data on the COVID-19 spread are regularly downloaded and displayed in
+            a map, summary tables, key figures and plots.",
             tags$br(),
-            tags$a(href = "https://www.youtube.com/c/AhmadBazzi", "YouTube"), " | ",
-            tags$a(href = "https://www.linkedin.com/in/drahmadbazzi/", "LinkedIn"), " | ",
-            tags$a(href = "https://scholar.google.fr/citations?user=9HWunwcAAAAJ&hl=en&oi=ao", "Google Scholar"), " | ",
-            tags$a(href = "https://www.researchgate.net/profile/Ahmad_Bazzi", "ResearchGate"), 
+            h3("Overview page"),
+            
+            tags$li(tags$b("Summary"), "Global summary cases for Confirmed cases, Estimated Recoveries, Deceased, "),
+            
+            tags$li(tags$b("Map"), "Map Includes a filters as shown in the picture below"),
+            tags$img(src = "im1.png", width = "640px", height = "320px"),
+            tags$li(tags$b("Filter"), " Time machine to display the statistic cases based on different date"),
+            
+            
+            h3("Data Page"),
+            tags$ul(
+              tags$li(tags$b("COVID-19 data:"), tags$a(href = "https://github.com/CSSEGISandData/COVID-19",
+                                                       "Johns Hopkins CSSE")),
+              tags$li(tags$b("Population data:"), tags$a(href = "https://data.worldbank.org/indicator/SP.POP.TOTL",
+                                                         "The World Bank"), "& Wikipedia for countries which are not in World Bank data set.")
+            ),
+            HTML("<b>Note</b>: Johns Hopkins is not updating their data on recovered cases anymore for various
+            countries. Therefore, this data is estimated as <i>(Confirmed at current date - 14 days) - deceased at
+            current date)</i>, wherever no real data is available."),
+            
+           
+            h3("Analysis"),
+            HTML("<b>Chart description</b>: this page shows 4 dirreferent charts for Evolution of Cases since Outbreak <i> (Global Word Cases) </i>,
+            New cases<i> (Select Country) </i>,
+            Cases per Country and Evolution of Cases since 10th/100th case<i> (Selected Coutry) <i>,
+            "),
+            tags$br(),
+            tags$img(src = "im2.png", width = "440px", height = "220px"),
+            
+            h3("Developers"),
+            "Omar Messaoud | MAMADOU ALPHA HAWA BALDE | ALI ALRABEEI| LIM YONG MENG | Pricipal of Data Science: Group project @",
+            tags$br(),
+            tags$a(href = "https://github.com/baldehalfa/shinyTracker", "Github"), 
             width = 12
           ),
-          width = 6,
+          width = 10,
         ),
         width = 12,
-        style = "padding: 15px"
+        style = "padding: 30px"
       )
     )
   )
@@ -215,7 +204,6 @@ ui <- fluidPage(
     tabPanel("Overview", page_overview, value = "page-overview"),
     tabPanel("Data", page_data, value = "page-data"),
     tabPanel("Analysis", page_analysis, value = "page-analysis"),
-    tabPanel("Help", page_help, value = "page-help"),
-    tabPanel("About", page_about, value = "page-about")
+    tabPanel("User Guide", page_about, value = "page-about")
     )
   )
