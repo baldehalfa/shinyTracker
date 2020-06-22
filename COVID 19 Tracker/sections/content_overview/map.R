@@ -1,3 +1,4 @@
+
 library("htmltools")
 
 addLabel <- function(data) {
@@ -11,7 +12,7 @@ addLabel <- function(data) {
     </table>'
   )
   data$label <- lapply(data$label, HTML)
-
+  
   return(data)
 }
 
@@ -23,11 +24,11 @@ map <- leaflet(addLabel(data_latest)) %>%
   addProviderTiles(providers$HERE.satelliteDay, group = "Satellite") %>%
   addLayersControl(
     baseGroups    = c("Light", "Satellite"),
-    overlayGroups = c("Confirmed", "Confirmed (per capita)", "Estimated Recoveries", "Deceased", "Active", "Active (per capita)")
+    overlayGroups = c("Confirmed", "Confirmed (per capita)", "Estimated Recoveries", "Deaths", "Active", "Active (per capita)")
   ) %>%
   hideGroup("Confirmed (per capita)") %>%
   hideGroup("Estimated Recoveries") %>%
-  hideGroup("Deceased") %>%
+  hideGroup("Deaths") %>%
   hideGroup("Active") %>%
   hideGroup("Active (per capita)") %>%
   addEasyButton(easyButton(
@@ -54,6 +55,7 @@ observe({
       fillOpacity  = 0.5,
       label        = ~label,
       labelOptions = labelOptions(textsize = 15),
+      color        = "#ff7000",
       group        = "Confirmed"
     ) %>%
     addCircleMarkers(
@@ -61,7 +63,7 @@ observe({
       lat          = ~Lat,
       radius       = ~log(confirmedPerCapita^(zoomLevel)),
       stroke       = FALSE,
-      color        = "#00b3ff",
+      color        = "#ff7000",
       fillOpacity  = 0.5,
       label        = ~label,
       labelOptions = labelOptions(textsize = 15),
@@ -72,7 +74,7 @@ observe({
       lat          = ~Lat,
       radius       = ~log(recovered^(zoomLevel)),
       stroke       = FALSE,
-      color        = "#000000",
+      color        = "#00ff00",
       fillOpacity  = 0.5,
       label        = ~label,
       labelOptions = labelOptions(textsize = 15),
@@ -83,18 +85,18 @@ observe({
       lat          = ~Lat,
       radius       = ~log(deceased^(zoomLevel)),
       stroke       = FALSE,
-      color        = "#EEEEEE",
+      color        = "black",
       fillOpacity  = 0.5,
       label        = ~label,
       labelOptions = labelOptions(textsize = 15),
-      group        = "Deceased"
+      group        = "Deaths"
     ) %>%
     addCircleMarkers(
       lng          = ~Long,
       lat          = ~Lat,
       radius       = ~log(active^(zoomLevel / 2)),
       stroke       = FALSE,
-      color        = "#000000",
+      color        = "#ff0000",
       fillOpacity  = 0.5,
       label        = ~label,
       labelOptions = labelOptions(textsize = 15),
@@ -105,7 +107,7 @@ observe({
       lat          = ~Lat,
       radius       = ~log(activePerCapita^(zoomLevel)),
       stroke       = FALSE,
-      color        = "#EEEEEE",
+      color        = "#ff0000",
       fillOpacity  = 0.5,
       label        = ~label,
       labelOptions = labelOptions(textsize = 15),

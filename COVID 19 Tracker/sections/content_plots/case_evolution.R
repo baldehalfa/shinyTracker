@@ -1,31 +1,3 @@
-output$case_evolution <- renderPlotly({
-  data <- data_evolution %>%
-    group_by(date, var) %>%
-    summarise(
-      "value" = sum(value, na.rm = T)
-    ) %>%
-    as.data.frame()
-
-  p <- plot_ly(
-    data,
-    x     = ~date,
-    y     = ~value,
-    name  = sapply(data$var, capFirst),
-    color = ~var,
-    type  = 'scatter',
-    mode  = 'lines') %>%
-    layout(
-      yaxis = list(title = "# Cases"),
-      xaxis = list(title = "Date")
-    )
-
-
-  if (input$checkbox_logCaseEvolution) {
-    p <- layout(p, yaxis = list(type = "log"))
-  }
-
-  return(p)
-})
 
 output$selectize_casesByCountries <- renderUI({
   selectizeInput(
@@ -208,33 +180,6 @@ output$case_evolution_after100 <- renderPlotly({
 
 output$box_caseEvolution <- renderUI({
   tagList(
-    fluidRow(
-      box(
-        title = "Evolution of Cases since Outbreak",
-        plotlyOutput("case_evolution"),
-        column(
-          checkboxInput("checkbox_logCaseEvolution", label = "Logarithmic Y-Axis", value = FALSE),
-          width = 3,
-          style = "float: right; padding: 10px; margin-right: 50px"
-        ),
-        width = 6
-      ),
-      box(
-        title = "New cases",
-        plotlyOutput("case_evolution_new"),
-        column(
-          uiOutput("selectize_casesByCountries_new"),
-          width = 3,
-        ),
-        column(
-          HTML("Note: Active cases are calculated as <i>Confirmed - (Estimated Recoveries + Deceased)</i>. Therefore, <i>new</i> active cases can
-          be negative for some days, if on this day there were more new estimated recoveries + deceased cases than there were new
-          confirmed cases."),
-          width = 7
-        ),
-        width = 6
-      )
-    ),
     fluidRow(
       box(
         title = "Cases per Country",

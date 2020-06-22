@@ -9,10 +9,9 @@ library("fs")
 library("wbstats")
 
 
-# Get data form git hub
+# Get data form github
 data_confirmed <- read_csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv")
 data_deceased  <- read_csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv")
-# data_recovered <- read_csv("data/time_series_covid19_recovered_global.csv")
 
 # Get latest data
 current_date <- as.Date(names(data_confirmed)[ncol(data_confirmed)], format = "%m/%d/%y")

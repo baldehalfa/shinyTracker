@@ -4,19 +4,6 @@ getFullTableData <- function(groupBy) {
     filter(date == current_date) %>%
     pivot_wider(names_from = var, values_from = c(value, value_new)) %>%
     select(-date, -Lat, -Long) %>%
-    add_row(
-      "Province/State"      = "World",
-      "Country/Region"      = "World",
-      "population"          = 7800000000,
-      "value_confirmed"     = sum(.$value_confirmed, na.rm = T),
-      "value_new_confirmed" = sum(.$value_new_confirmed, na.rm = T),
-      "value_recovered"     = sum(.$value_recovered, na.rm = T),
-      "value_new_recovered" = sum(.$value_new_recovered, na.rm = T),
-      "value_deceased"      = sum(.$value_deceased, na.rm = T),
-      "value_new_deceased"  = sum(.$value_new_deceased, na.rm = T),
-      "value_active"        = sum(.$value_active, na.rm = T),
-      "value_new_active"    = sum(.$value_new_active, na.rm = T)
-    ) %>%
     group_by(!!sym(groupBy), population) %>%
     summarise(
       confirmed_total     = sum(value_confirmed, na.rm = T),
@@ -61,8 +48,8 @@ output$fullTable <- renderDataTable({
     "Total Confirmed <br>(per 100k)",
     "Total Estimated Recoveries",
     "New Estimated Recoveries",
-    "Total Deceased",
-    "New Deceased",
+    "Total Deaths",
+    "New Deaths",
     "Total Active",
     "New Active",
     "Total Active <br>(per 100k)")

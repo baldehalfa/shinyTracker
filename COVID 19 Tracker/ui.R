@@ -5,22 +5,21 @@ body_help <- dashboardBody(
     fluidRow(
       column(
         box(
-          title = div("App Description", style = "padding-left: 20px", class = "h2"),
           column(
-            h3("The COVID-19 Tracker App"),
+            h3("COVID-19 Shiny Tracker"),
             "This dashboard demonstrates some recent news about the Coronavirus pandemic. 
             This App is a simulator, that reads from the John Hopkins dataset, and shows some data related to mortality,  
             recovery, infected, and etc..",
             tags$br(),
-            
-            
-            h3("Creator"),
-            "Ahmad Bazzi",
+            h3("Creators"),
+            "ALI ALRABEEI",
             tags$br(),
-            tags$a(href = "https://www.youtube.com/c/AhmadBazzi", "YouTube"), " | ",
-            tags$a(href = "https://www.linkedin.com/in/drahmadbazzi/", "LinkedIn"), " | ",
-            tags$a(href = "https://scholar.google.fr/citations?user=9HWunwcAAAAJ&hl=en&oi=ao", "Google Scholar"), " | ",
-            tags$a(href = "https://www.researchgate.net/profile/Ahmad_Bazzi", "ResearchGate"), 
+            "MAMADOU ALPHA HAWA BALDE",
+            tags$br(),
+            "LIM YONG MENG",
+            tags$br(),
+            "KHAIRUL HAFIZ",
+            tags$br(),
             width = 12
           ),
           width = 6,
@@ -48,22 +47,21 @@ body_about <- dashboardBody(
     fluidRow(
       column(
         box(
-          title = div("App Description", style = "padding-left: 20px", class = "h2"),
           column(
-            h3("The COVID-19 Tracker App"),
+            h3("COVID-19 Shiny Tracker"),
             "This dashboard demonstrates some recent news about the Coronavirus pandemic. 
             This App is a simulator, that reads from the John Hopkins dataset, and shows some data related to mortality,  
             recovery, infected, and etc..",
             tags$br(),
-            
-            
-            h3("Creator"),
-            "Ahmad Bazzi",
+            h3("Creators"),
+            "ALI ALRABEEI",
             tags$br(),
-            tags$a(href = "https://www.youtube.com/c/AhmadBazzi", "YouTube"), " | ",
-            tags$a(href = "https://www.linkedin.com/in/drahmadbazzi/", "LinkedIn"), " | ",
-            tags$a(href = "https://scholar.google.fr/citations?user=9HWunwcAAAAJ&hl=en&oi=ao", "Google Scholar"), " | ",
-            tags$a(href = "https://www.researchgate.net/profile/Ahmad_Bazzi", "ResearchGate"), 
+            "MAMADOU ALPHA HAWA BALDE",
+            tags$br(),
+            "LIM YONG MENG",
+            tags$br(),
+            "KHAIRUL HAFIZ",
+            tags$br(),
             width = 12
           ),
           width = 6,
@@ -86,11 +84,11 @@ page_about <- dashboardPage(
 # Overview
 body_overview <- dashboardBody(
   tags$head(
-    tags$style(type = "text/css", "#overview_map {height: 75h !important;}"),
+    tags$style(type = "text/css", "#overview_map {height: 77.5vh !important;}"),
     tags$style(type = "text/css", "#summary {height: 60h !important;}"),
     tags$style(type = 'text/css', ".slider-animate-button { font-size: 20pt !important; }"),
     tags$style(type = 'text/css', ".slider-animate-container { text-align: left !important; }"),
-    # tags$style(type = "text/css", "@media (max-width: 991px) { .details { display: flex; flex-direction: column; } }"),
+    tags$style(type = "text/css", "@media (max-width: 991px) { .details { display: flex; flex-direction: column; } }"),
     tags$style(type = "text/css", "@media (max-width: 991px) { .details .map { order: 1; width: 100%; } }"),
     tags$style(type = "text/css", "@media (max-width: 991px) { .details .summary { order: 3; width: 100%; } }"),
     tags$style(type = "text/css", "@media (max-width: 991px) { .details .slider { order: 2; width: 100%; } }")
@@ -104,13 +102,13 @@ body_overview <- dashboardBody(
           leafletOutput("overview_map")
         ),
         class = "map",
-        width = 9,
+        width = 10,
         style = 'padding:0px;'
       ),
       column(
         uiOutput("box_keyFigures"),
         class = "summary",
-        width = 3,
+        width = 2,
         style = 'padding:0px;'
       ),
       column(
@@ -151,7 +149,7 @@ body_data <- dashboardBody(
   ),
   fluidPage(
     fluidRow(
-      h3(paste0("Complete Data (", strftime(current_date, format = "%d.%m.%Y"), ")"),
+      h3(paste0("Complete Data (", strftime(current_date, format = "%d-%B-%Y"), ")"),
          class = "box-title", style = "margin-top: 10px; font-size: 18px;"),
       div(
         dataTableOutput("fullTable"),
@@ -198,9 +196,7 @@ page_analysis <- dashboardPage(
 ##
 ui <- fluidPage(
   title = "COVID-19 Shiny Tracker",
-  tags$head(
-    tags$link(rel = "shortcut icon", type = "image/png", href = "logo.png")
-  ),
+
   tags$style(type = "text/css", ".container-fluid {padding-left: 0px; padding-right: 0px !important;}"),
   tags$style(type = "text/css", ".navbar {margin-bottom: 0px;}"),
   tags$style(type = "text/css", ".content {padding: 0px;}"),
